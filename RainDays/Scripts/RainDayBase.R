@@ -10,10 +10,11 @@ library(metR)
 library(rgdal)
 rm(list = ls())
 
+setwd("E:/Climate-Agriculture-1/RainDays/")
 Data_Source="CPC-UNIFIED"
 
-Africa<-readOGR("SHP_AFRIQUE/Afrique_frontier_news.shp") 
-setwd("~/Desktop/ACMAD_Git/")
+Africa<-readOGR("/ACMAD_Git/SHP_AFRIQUE/Afrique_frontier_news.shp") 
+
 MinLon=-25
 MaxLon=55
 MinLat=-40
@@ -25,7 +26,7 @@ cpt=7
 A=c("Jan", "Feb", "Mar", "Apr", "May", "Jun" ,"Jul", "Aug", "Sep" ,"Oct", "Nov", "Dec")
 for (k in 1981:2021) {
   
-  Data<-rio::import(paste("Data/CPC-UNIFIED/CSV_Format/",k,".csv",sep=""))
+  Data<-rio::import(paste("/ACMAD_Git/Data/CPC-UNIFIED/CSV_Format/",k,".csv",sep=""))
   Data$Month=format(Data$T,"%b")
   #Data$Year=format(Data$T,"%Y")
   Data$rain[is.na(Data$rain)]=0
@@ -53,7 +54,7 @@ jj=1
     group_by(X,Y)%>%
     summarise(NbRainDay=sum(count))
   
-  Mask=rio::import(paste("Data/CPC-UNIFIED/Mask/mask_ ",Season_Name," .csv",sep = ""))
+  Mask=rio::import(paste("/ACMAD_Git/Data/CPC-UNIFIED/Mask/mask_ ",Season_Name," .csv",sep = ""))
   
   Mask=dplyr::select(Mask,-"Mean")
   
@@ -62,9 +63,9 @@ jj=1
   NumberDay=filter(NumberDay,mask>=1)
   NumberDay=dplyr::select(NumberDay,-'mask')
   
-  dir.create(paste("Data/CPC-UNIFIED/DataBase/Number_RainDays/",Season_Name,sep = ""),recursive = T,showWarnings = F)
+  dir.create(paste("/ACMAD_Git/Data/CPC-UNIFIED/DataBase/Number_RainDays/",Season_Name,sep = ""),recursive = T,showWarnings = F)
   
-  rio::export(NumberDay,paste("Data/CPC-UNIFIED/DataBase/Number_RainDays/",Season_Name,"/",k,".csv",sep = ""))
+  rio::export(NumberDay,paste("/ACMAD_Git/Data/CPC-UNIFIED/DataBase/Number_RainDays/",Season_Name,"/",k,".csv",sep = ""))
   
   print(k)
   
