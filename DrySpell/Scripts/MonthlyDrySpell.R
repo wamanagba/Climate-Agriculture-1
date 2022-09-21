@@ -18,7 +18,7 @@ options(download.file.extra = '--no-check-certificate')
 rm(list=ls())
 #dir.create("Results",recursive = T,showWarnings = F)
 #Shape file
-setwd("E:/Climate-Agriculture/DrySpell/")
+setwd("E:/Climate-Agriculture-1/DrySpell/")
 source("Scripts/Last_spell.R")
 source("Scripts/Dry_spell_Funct.R")
 Africa<-readOGR("E:/ACMAD_Git/SHP_AFRIQUE/Afrique_frontier_news.shp") 
