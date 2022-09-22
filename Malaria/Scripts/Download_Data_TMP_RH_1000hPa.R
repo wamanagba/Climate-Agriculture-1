@@ -8,7 +8,7 @@ rm(list=ls())
 options(download.file.method = 'wget')
 options(timeout=600)
 getOption('timeout')
-setwd("E:/Climate-Agriculture/Malaria/")#give the date of the forecast
+setwd("~/Desktop/ACMAD_Git/Malaria/")#give the date of the forecast
 #Week 1
 Time<-seq(24,168,6)
 Step=data.frame(Time=Time)
