@@ -204,7 +204,7 @@ breaklabel <- function(x){
 
 Title = paste("Number of Rain Days Trend for ",Season_Name,"\nData Source:",Data_Source,sep="")
 
-Im<-grid::rasterGrob(png::readPNG(paste("/home/acmad/Desktop/ACMAD_Git/Logos/Acmad_logo_1.png",sep="")), interpolate = TRUE)
+Im<-grid::rasterGrob(png::readPNG(paste("/ACMAD_Git/Logos/Acmad_logo_1.png",sep="")), interpolate = TRUE)
 
 l<-ggplot(data = Pvalue_df,aes(x,y))+geom_contour_filled(data=Trend_df, aes(x,y,z =TrendValue),breaks= mybreaks, show.legend = TRUE) +
   scale_fill_manual(palette=mycolors, values=breaklabel(9), name="mm/decade", drop=FALSE, guide = guide_legend(reverse = TRUE))+theme_bw()
@@ -218,9 +218,9 @@ last<-last+labs(title = Title,x="",y="")+stat_subset(aes(subset =pvalue <=0.05),
 last<-last+ metR::scale_x_longitude(limits = c(MinLon, MaxLon),breaks = seq(MinLon, MaxLon,10)) + metR:: scale_y_latitude(limits = c(MinLat, MaxLat),breaks = seq(MinLat, MaxLat,10)) 
 
 
-#dir.create(paste("Products/Maps/",sep=""),recursive = T,showWarnings = F)
+dir.create(paste("Products/Trend/",sep=""),recursive = T,showWarnings = F)
 
-jpeg(filename = paste("/ACMAD_Git/Data/CPC-UNIFIED/DataBase/Number_RainDays/",Season_Name,"/",Start_Year,"_",End_Year,".jpeg",sep=""),
+jpeg(filename = paste("Products/Trend/",Season_Name,"-",Start_Year,"_",End_Year,".jpeg",sep=""),
      width = 10,
      height = 13,
      units = "in",
