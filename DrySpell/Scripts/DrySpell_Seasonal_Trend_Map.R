@@ -1,5 +1,5 @@
 ################################################################################
-#                                 : sosnku2002@yahoo.com
+#                                
 #https://iridl.ldeo.columbia.edu/expert/expert/SOURCES/.NOAA/.NCEP/.CPC/.CAMS_OPI/.v0208/.mean/.prcp/T/(Aug%201981)/(Oct%202010)/RANGEEDGES/Y/-40/0.5/40/GRID/X/-25/0.5/55/GRID/T/3/runningAverage/T/12/STEP/92/mul/data.nc
 ################################################################################
 library(rio)
