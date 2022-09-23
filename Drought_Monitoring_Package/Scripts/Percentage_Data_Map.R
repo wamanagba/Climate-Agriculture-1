@@ -15,26 +15,26 @@ library(ggrepel)
 library(Hmisc)
 
 options(download.file.extra = '--no-check-certificate')
-rm(list=ls())
+# rm(list=ls())
 
-setwd("D:/Drought_Monitoring_Package")
+setwd("/Climate-Agriculture-1/Drought_Monitoring_Package/")
 
 dir.create("Results",recursive = T,showWarnings = F)
 
-Africa<-readOGR("SHP_AFRIQUE/Afrique_frontier_news.shp") 
+Africa<-readOGR("/ACMAD_Git/SHP_AFRIQUE/Afrique_frontier_news.shp") 
 
 #Give the month abbr and name
-Parameters<-import("Parameter/Parameters.csv")
+# Parameters<-import("Parameter/Parameters.csv")
 
-Month=Parameters[1]
-Month_name=Parameters[2]
-Year=Parameters[3]
+# Month="Aug"
+# Month_name="August"
+# Year=2022
 
 #Monthly Cumulative
 
-download.file(paste("https://iridl.ldeo.columbia.edu/SOURCES/.NOAA/.NCEP/.CPC/.CAMS_OPI/.v0208/.mean/.prcp/T/(",Month$Month_Abbr[1],"%20",Year,")/(",Month$Month_Abbr[1],"%20",Year,")/RANGEEDGES/Y/-40/0.5/40/GRID/X/-25/0.5/55/GRID/%5BT%5D/average/31/mul/data.nc",sep=""),mode="wb",paste("Data/Cumulative_",Month_name,"_",Year,".nc",sep=""))
+download.file(paste("https://iridl.ldeo.columbia.edu/SOURCES/.NOAA/.NCEP/.CPC/.CAMS_OPI/.v0208/.mean/.prcp/T/(",Month,"%20",Year,")/(",Month,"%20",Year,")/RANGEEDGES/Y/-40/0.5/40/GRID/X/-25/0.5/55/GRID/%5BT%5D/average/31/mul/data.nc",sep=""),mode="wb",paste("/ACMAD_Git/Data/Cumulative_",Month_name,"_",Year,".nc",sep=""))
 
-Data_Cum<-raster::raster(x = paste("Data/Cumulative_",Month_name,"_",Year,".nc",sep=""))
+Data_Cum<-raster::raster(x = paste("/ACMAD_Git/Data/Cumulative_",Month_name,"_",Year,".nc",sep=""))
 
 # Non_Interpolated_Cum<-as.data.frame(rasterToPoints(Data_Cum))
 # names(Non_Interpolated_Cum)[3]="Precipitation"
@@ -50,10 +50,10 @@ names(Data_df_Cum)[3]="Precipitation"
 #Monthly Climatology
 #http://iridl.ldeo.columbia.edu/SOURCES/.NOAA/.NCEP/.CPC/.CAMS_OPI/.v0208/.mean/.prcp/T/(Jun%201981)/(Jun%202010)/RANGEEDGES/Y/-40/0.5/40/GRID/X/25/0.5/55/GRID/T/12/STEP/%5BT%5Daverage/31/mul/data.nc
 
-download.file(paste("https://iridl.ldeo.columbia.edu/SOURCES/.NOAA/.NCEP/.CPC/.CAMS_OPI/.v0208/.mean/.prcp/T/(",Month$Month_Abbr[1],"%201981)/(",Month$Month_Abbr[1],"%202010)/RANGEEDGES/Y/-40/0.5/40/GRID/X/-25/0.5/55/GRID/T/12/STEP/%5BT%5Daverage/31/mul/data.nc",sep=""),mode="wb", paste("Data/Climatology_",Month_name,"_",Year,".nc",sep=""))
+download.file(paste("https://iridl.ldeo.columbia.edu/SOURCES/.NOAA/.NCEP/.CPC/.CAMS_OPI/.v0208/.mean/.prcp/T/(",Month,"%201981)/(",Month,"%202010)/RANGEEDGES/Y/-40/0.5/40/GRID/X/-25/0.5/55/GRID/T/12/STEP/%5BT%5Daverage/31/mul/data.nc",sep=""),mode="wb", paste("/ACMAD_Git/Data/Climatology_",Month_name,"_",Year,".nc",sep=""))
 
 
-Data_Clim<-raster::raster(x=paste("Data/Climatology_",Month_name,"_",Year,".nc",sep=""))
+Data_Clim<-raster::raster(x=paste("/ACMAD_Git/Data/Climatology_",Month_name,"_",Year,".nc",sep=""))
 
 # Non_Interpolated_Clim<-as.data.frame(rasterToPoints(Data_Clim))
 # names(Non_Interpolated_Clim)[3]="Climatology"
@@ -77,7 +77,7 @@ Percentage<-merge(Data_df_Cum,Data_df_Clim,by=c("x","y"))
 
 Percentage$RR<-ifelse(Percentage$Climatology<=31,100,(Percentage$Precipitation/Percentage$Climatology)*100)
 
-rio::export(Percentage[,c("x","y","RR")],paste("Results/Percentage_",Month$Month_Abbr[1],".csv",sep=""))
+rio::export(Percentage[,c("x","y","RR")],paste("/ACMAD_Git/Drought_Monitoring_Package/Results/Percentage_",Month,".csv",sep=""))
 
 
 
@@ -111,9 +111,9 @@ last<-last+ metR::scale_x_longitude(limits = c(-25, 60),breaks = seq(-25, 60,10)
 last<-last+labs(title = Title,x="",y="")
 
   
-dir.create(paste("Products/Graphs/",Month_name,sep=""),recursive = T,showWarnings = F)
+dir.create(paste("Products/Graphs/",Year,"/",Month_name,sep=""),recursive = T,showWarnings = F)
 
-jpeg(filename = paste("Products/Graphs/",Month_name,"/Percentage_",Month,"_",Year,".jpeg",sep=""),
+jpeg(filename = paste("Products/Graphs/",Year,"/",Month_name,"/Percentage_",Month,"_",Year,".jpeg",sep=""),
      width = 11,
      height = 12,
      units = "in",

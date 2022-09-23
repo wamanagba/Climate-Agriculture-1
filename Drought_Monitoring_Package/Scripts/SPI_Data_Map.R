@@ -1,3 +1,4 @@
+
 library(rio)
 library(dplyr)
 library(ncdf4)
@@ -13,20 +14,20 @@ library(ggdark)
 library(showtext)
 library(ggrepel)
 
-setwd("C:/Users/Yacou/Desktop/ACMAD_Git/")
+setwd("/Climate-Agriculture-1/Drought_Monitoring_Package/")
 
 options(download.file.extra = '--no-check-certificate')
-rm(list=ls())
+# rm(list=ls())
 #dir.create("Results",recursive = T,showWarnings = F)
 #Monthly data
 
-Africa<-readOGR("SHP_AFRIQUE/Afrique_frontier_news.shp") 
+Africa<-readOGR("/ACMAD_Git/SHP_AFRIQUE/Afrique_frontier_news.shp") 
 
 #Parameters<-import("Parameter/Parameters.csv")
 
-Month="Mar"
-Month_name="March"
-Year=2022
+# Month="Mar"
+# Month_name="March"
+# Year=2022
 
 Checking<-as.numeric(format(as.Date(paste(Year,"-",Month,"-",01,sep=""), tryFormats = c("%Y-%b-%d")),"%m"))
 
@@ -37,7 +38,7 @@ if(Checking==1){
   
   First_Month_Name<-format(as.Date(paste(Year,"-",11,"-",01,sep=""), tryFormats = c("%Y-%m-%d")),"%B")
   
-  download.file(paste("http://iridl.ldeo.columbia.edu/SOURCES/.IRI/.Analyses/.SPI/.SPI-CAMSOPI_3-Month/X/-25/0.5/55/GRID/Y/-40/0.5/40/GRID/T/%28",First_Month,"-",Month,"%20",Year-1,"%29%28",First_Month,"-",Month,"%20",Year,"%29RANGEEDGES/data.nc",sep=""),mode="wb",paste("Data/SPI_",First_Month,"_",Month,".nc",sep=""))
+  download.file(paste("http://iridl.ldeo.columbia.edu/SOURCES/.IRI/.Analyses/.SPI/.SPI-CAMSOPI_3-Month/X/-25/0.5/55/GRID/Y/-40/0.5/40/GRID/T/%28",First_Month,"-",Month,"%20",Year-1,"%29%28",First_Month,"-",Month,"%20",Year,"%29RANGEEDGES/data.nc",sep=""),mode="wb",paste("/ACMAD_Git/Drought_Monitoring_Package/Data/SPI_",First_Month,"_",Month,".nc",sep=""))
   
 }
 if(Checking==2){
@@ -46,7 +47,7 @@ if(Checking==2){
   
   First_Month_Name<-format(as.Date(paste(Year,"-",12,"-",01,sep=""), tryFormats = c("%Y-%m-%d")),"%B")
   
-  download.file(paste("http://iridl.ldeo.columbia.edu/SOURCES/.IRI/.Analyses/.SPI/.SPI-CAMSOPI_3-Month/X/-25/0.5/55/GRID/Y/-40/0.5/40/GRID/T/%28",First_Month,"-",Month,"%20",Year-1,"%29%28",First_Month,"-",Month,"%20",Year,"%29RANGEEDGES/data.nc",sep=""),mode="wb",paste("Data/SPI_",First_Month,"_",Month,".nc",sep=""))
+  download.file(paste("http://iridl.ldeo.columbia.edu/SOURCES/.IRI/.Analyses/.SPI/.SPI-CAMSOPI_3-Month/X/-25/0.5/55/GRID/Y/-40/0.5/40/GRID/T/%28",First_Month,"-",Month,"%20",Year-1,"%29%28",First_Month,"-",Month,"%20",Year,"%29RANGEEDGES/data.nc",sep=""),mode="wb",paste("/ACMAD_Git/Drought_Monitoring_Package/Data/SPI_",First_Month,"_",Month,".nc",sep=""))
   
 }
 if(Checking>=3){
@@ -55,7 +56,7 @@ if(Checking>=3){
   
   First_Month_Name<-format(as.Date(paste(Year,"-",Checking-2,"-",01,sep=""), tryFormats = c("%Y-%m-%d")),"%B")
   
-  download.file(paste("http://iridl.ldeo.columbia.edu/SOURCES/.IRI/.Analyses/.SPI/.SPI-CAMSOPI_3-Month/X/-25/0.5/55/GRID/Y/-40/0.5/40/GRID/T/%28",First_Month,"-",Month,"%20",Year,"%29%28",First_Month,"-",Month,"%20",Year,"%29RANGEEDGES/data.nc",sep=""),mode="wb",paste("Data/SPI_",First_Month,"_",Month,".nc",sep=""))
+  download.file(paste("http://iridl.ldeo.columbia.edu/SOURCES/.IRI/.Analyses/.SPI/.SPI-CAMSOPI_3-Month/X/-25/0.5/55/GRID/Y/-40/0.5/40/GRID/T/%28",First_Month,"-",Month,"%20",Year,"%29%28",First_Month,"-",Month,"%20",Year,"%29RANGEEDGES/data.nc",sep=""),mode="wb",paste("/ACMAD_Git/Drought_Monitoring_Package/Data/SPI_",First_Month,"_",Month,".nc",sep=""))
   
 }
 #SPI Index
@@ -63,7 +64,7 @@ if(Checking>=3){
 #http://iridl.ldeo.columbia.edu/expert/expert/SOURCES/a%3A/.IRI/.Analyses/.SPI/.SPI-CAMSOPI_1-Month/T/(Jun%202020)/VALUES/X/-20/0.5/55/GRID/Y/-40/0.5/40/GRID/data.nc
 #download.file(paste("http://iridl.ldeo.columbia.edu/SOURCES/.IRI/.Analyses/.SPI/.SPI-CAMSOPI_3-Month/X/-25/0.5/55/GRID/Y/-40/0.5/40/GRID/T/%28",First_Month,"-",Month,"%20",Year,"%29%28",First_Month,"-",Month,"%20",Year,"%29RANGEEDGES/data.nc",sep=""),mode="wb",paste("Data/SPI_",First_Month,"_",Month,".nc",sep=""))
 
-Data<-nc_open(filename = paste("Data/SPI_",First_Month,"_",Month,".nc",sep=""))
+Data<-nc_open(filename = paste("/ACMAD_Git/Drought_Monitoring_Package/Data/SPI_",First_Month,"_",Month,".nc",sep=""))
 Lon<-ncvar_get(Data,"X")
 Lat<-ncvar_get(Data,"Y")
 Val<-ncvar_get(Data,"SPI-CAMSOPI_3-Month")
@@ -87,14 +88,14 @@ Masked_SPI<-raster::mask(Data_interpolted_SPI,Africa)
 Data_df_SPI<- as.data.frame(rasterToPoints(Masked_SPI))
 
 names(Data_df_SPI)[3]="SPI"
-rio::export(Data_df_SPI,paste("Products/Drought_Monitoring/Data/SPI_",First_Month,"-",Month,".csv",sep=""))
+rio::export(Data_df_SPI,paste("/ACMAD_Git/Products/Drought_Monitoring/Data/SPI_",First_Month,"-",Month,".csv",sep=""))
 
 ####################Climatology of the season###################################
 
 
-download.file(paste("http://iridl.ldeo.columbia.edu/SOURCES/.NOAA/.NCEP/.CPC/.CAMS_OPI/.v0208/.mean/.prcp/T/(",First_Month,"%201981)/(",Month,"%202010)/RANGEEDGES/Y/-40/0.5/40/GRID/X/-25/0.5/55/GRID/T/",3,"/runningAverage/T/12/STEP/%5BT%5Daverage/",89,"/mul/data.nc",sep=""),mode="wb",paste("Data/Climatology_",First_Month,"_",Month,".nc",sep=""))
+download.file(paste("http://iridl.ldeo.columbia.edu/SOURCES/.NOAA/.NCEP/.CPC/.CAMS_OPI/.v0208/.mean/.prcp/T/(",First_Month,"%201981)/(",Month,"%202010)/RANGEEDGES/Y/-40/0.5/40/GRID/X/-25/0.5/55/GRID/T/",3,"/runningAverage/T/12/STEP/%5BT%5Daverage/",89,"/mul/data.nc",sep=""),mode="wb",paste("/ACMAD_Git/Drought_Monitoring_Package/Data/Climatology_",First_Month,"_",Month,".nc",sep=""))
 
-Climatology_Raster_format<-raster::raster(x =paste("Data/Climatology_",First_Month,"_",Month,".nc",sep=""))
+Climatology_Raster_format<-raster::raster(x =paste("/ACMAD_Git/Drought_Monitoring_Package/Data/Climatology_",First_Month,"_",Month,".nc",sep=""))
 
 Data_interpolted_clim<-raster::disaggregate(Climatology_Raster_format,8,method="bilinear")
 
@@ -112,7 +113,7 @@ Data_df_SPI<-merge(Data_df_SPI,Data_df_Clim,by=c("x","y"))
 Data_df_SPI$SPI<-ifelse(Data_df_SPI$Climatology<100,0,Data_df_SPI$SPI)
 
 
-rio::export(Data_df_SPI[,c("x","y","SPI","Climatology")],paste("Products/Drought_Monitoring/Data/SPI_",First_Month,"-",Month,".csv",sep=""))
+rio::export(Data_df_SPI[,c("x","y","SPI","Climatology")],paste("/ACMAD_Git/Products/Drought_Monitoring/Data/SPI_",First_Month,"-",Month,".csv",sep=""))
 
 ######Mapping
 
@@ -144,9 +145,9 @@ last<-last+labs(title = Title,x="",y="")
 
 
 
-dir.create(paste("Products/Drought_Monitoring/Maps/",Month_name,sep=""),recursive = T,showWarnings = F)
+dir.create(paste("Products/Graphs/",Year,"/",Month_name,sep=""),recursive = T,showWarnings = F)
 
-jpeg(filename = paste("Products/Drought_Monitoring/Maps/",Month_name,"/SPI_",First_Month,"_",Month,"_",Year,".jpeg",sep=""),
+jpeg(filename = paste("Products/Graphs/",Year,"/",Month_name,"/SPI_",First_Month,"_",Month,"_",Year,".jpeg",sep=""),
      width = 11,
      height = 12,
      units = "in",

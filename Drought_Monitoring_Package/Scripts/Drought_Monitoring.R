@@ -47,18 +47,22 @@ library(ggdark)
 library(showtext)
 library(ggrepel)
 #options(warn = -1)
-setwd("D:/Drought_Monitoring_Package/")
+setwd("/Climate-Agriculture-1/Drought_Monitoring_Package/")
 ######################################################################
-path="D:/Drought_Monitoring_Package/"
+path="/Climate-Agriculture-1/Drought_Monitoring_Package/"
+
 Month="Jan"
 Month_name="January"
 Year=2021
 ######################################################################
-Parameters<-data.frame(Month_Abbr=Month,Month_name=Month_name,Year=Year,path=path)
+# Parameters<-data.frame(Month_Abbr=Month,Month_name=Month_name,Year=Year,path=path)
 
-rio::export(Parameters,"Parameter/Parameters.csv")
+# rio::export(Parameters,"Parameter/Parameters.csv")
   
 source("Scripts/Soil_Moisture_Data_Map.R")
+
 source("Scripts/Percentage_Data_Map.R")
+
 source("Scripts/SPI_Data_Map.R")
+
 source("Scripts/Drought_Index_Data_Map.R")

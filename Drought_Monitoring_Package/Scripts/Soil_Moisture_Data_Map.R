@@ -13,22 +13,22 @@ library(ggdark)
 library(showtext)
 library(ggrepel)
 options(download.file.extra = '--no-check-certificate')
-rm(list=ls())
+# rm(list=ls())
 dir.create("Results",recursive = T,showWarnings = F)
 #Shape file
-setwd("D:/Drought_Monitoring_Package")
+setwd("/Climate-Agriculture-1/Drought_Monitoring_Package")
 
-Africa<-readOGR("SHP_AFRIQUE/Afrique_frontier_news.shp") 
-Parameters<-import("Parameter/Parameters.csv")
+Africa<-readOGR("/ACMAD_Git/SHP_AFRIQUE/Afrique_frontier_news.shp") 
 
-setwd(paste(Parameters[4],sep=""))
-Month=Parameters[1]
-Month_name=Parameters[2]
-Year=Parameters[3]
 
-download.file(paste("http://iridl.ldeo.columbia.edu/expert/expert/SOURCES/.NOAA/.NCEP/.CPC/.GMSM/.w/Y/-40/0.5/40/GRID/X/-25/0.5/55/GRID/T/(%20",Month,"%20",Year,")/VALUES/data.nc",sep=""),mode="wb",paste("Data/Soil_M_",Month,"","_",Year,".nc"))
 
-SM_Raster_format<-raster::raster(x =paste("Data/Soil_M_",Month,"","_",Year,".nc"))
+# Month="Jan"
+# Month_name="January"
+# Year=2022
+
+download.file(paste("http://iridl.ldeo.columbia.edu/expert/expert/SOURCES/.NOAA/.NCEP/.CPC/.GMSM/.w/Y/-40/0.5/40/GRID/X/-25/0.5/55/GRID/T/(%20",Month,"%20",Year,")/VALUES/data.nc",sep=""),mode="wb",paste("/ACMAD_Git/Drought_Monitoring_Package/Data/Soil_M_",Month,"","_",Year,".nc"))
+
+SM_Raster_format<-raster::raster(x =paste("/ACMAD_Git/Drought_Monitoring_Package/Data/Soil_M_",Month,"","_",Year,".nc"))
 
 # Non_Interpolated_SM<-as.data.frame(rasterToPoints(SM_Raster_format))
 # Non_Interpolated_SM$w<-ifelse(Non_Interpolated_SM$w<0,NA,Non_Interpolated_SM$w)
@@ -63,11 +63,11 @@ names(Data_df_SM)[3]="SM"
 
 #Climatology Soil Moisture
 
-download.file(paste("http://iridl.ldeo.columbia.edu/expert/expert/SOURCES/.NOAA/.NCEP/.CPC/.GMSM/.w/T/(",Month,"%201981)/(",Month,"%202010)/RANGEEDGES/Y/-40/0.5/40/GRID/X/-25/0.5/55/GRID/T/12/STEP/%5BT%5Daverage/data.nc",sep=""),mode="wb",paste("Data/Climatology_Soil_",Month,"","_",Year,".nc"))
+download.file(paste("http://iridl.ldeo.columbia.edu/expert/expert/SOURCES/.NOAA/.NCEP/.CPC/.GMSM/.w/T/(",Month,"%201981)/(",Month,"%202010)/RANGEEDGES/Y/-40/0.5/40/GRID/X/-25/0.5/55/GRID/T/12/STEP/%5BT%5Daverage/data.nc",sep=""),mode="wb",paste("/ACMAD_Git/Drought_Monitoring_Package/Data/Climatology_Soil_",Month,"","_",Year,".nc"))
 
 
 
-SM_Raster_format_Clim<-raster::raster(x =paste("Data/Climatology_Soil_",Month,"","_",Year,".nc"))
+SM_Raster_format_Clim<-raster::raster(x =paste("/ACMAD_Git/Drought_Monitoring_Package/Data/Climatology_Soil_",Month,"","_",Year,".nc"))
 
 # Non_Interpolated_Clim<-as.data.frame(rasterToPoints(SM_Raster_format_Clim))
 # 
@@ -112,7 +112,7 @@ Anomaly_Soil<-merge(Data_df_SM,SM_Data_df_Clim,by=c("x","y"))
 
 Anomaly_Soil$Anomaly<-ifelse(Anomaly_Soil$SM<0,0,Anomaly_Soil$SM-Anomaly_Soil$SM_Clim)
 
-rio::export(Anomaly_Soil,paste("Results/Anomaly_Soil_",Month,".csv",sep=""))
+rio::export(Anomaly_Soil,paste("/ACMAD_Git/Drought_Monitoring_Package/Results/Anomaly_Soil_",Month,".csv",sep=""))
 
 
 
@@ -148,8 +148,8 @@ last<-last+  annotation_custom(Im, xmin = 50, xmax = 60, ymin =30, ymax = 40) +c
 last<-last+ metR::scale_x_longitude(limits = c(-25, 60),breaks = seq(-25, 60,10)) + metR:: scale_y_latitude(limits = c(-40, 40),breaks = seq(-40, 40,10))
 last<-last+labs(title = Title,x="",y="")
 
-dir.create(paste("Products/Graphs/",Month_name,sep=""),recursive = T,showWarnings = F)
-jpeg(filename = paste("Products/Graphs/",Month_name,"/Soil_Moisture_",Month,"_",Year,".jpeg",sep=""),
+dir.create(paste("Products/Graphs/",Year,"/",Month_name,sep=""),recursive = T,showWarnings = F)
+jpeg(filename = paste("Products/Graphs/",Year,"/",Month_name,"/Soil_Moisture_",Month,"_",Year,".jpeg",sep=""),
      width = 11,
      height = 12,
      units = "in",
